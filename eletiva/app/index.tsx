@@ -1,7 +1,6 @@
 import React, { useState } from "react";
-import { View, Text, TextInput, TouchableOpacity, StyleSheet, KeyboardAvoidingView, Platform } from "react-native";
 
-export default function Index() {
+export default function App() {
   const [matricula, setMatricula] = useState("");
 
   const handleConsulta = async () => {
@@ -25,33 +24,29 @@ export default function Index() {
   };
 
   return (
-    <KeyboardAvoidingView
-      style={{ flex: 1 }}
-      behavior={Platform.OS === "ios" ? "padding" : undefined}
-    >
-      <View style={styles.container}>
-        <Text style={styles.title}>Bem-vindo!</Text>
-        <Text style={styles.subtitle}>Informe seu Número de Matrícula</Text>
-        <TextInput
-          style={styles.input}
-          placeholder="Número de Matrícula"
-          placeholderTextColor="#aaa"
-          keyboardType="numeric"
-          value={matricula}
-          onChangeText={setMatricula}
-        />
-        <TouchableOpacity style={styles.button} onPress={handleConsulta}>
-          <Text style={styles.buttonText}>Consultar</Text>
-        </TouchableOpacity>
-      </View>
-    </KeyboardAvoidingView>
+    <div style={styles.container}>
+      <h1 style={styles.title}>Bem-vindo!</h1>
+      <p style={styles.subtitle}>Informe seu Número de Matrícula</p>
+      <input
+        style={styles.input}
+        placeholder="Número de Matrícula"
+        type="number"
+        value={matricula}
+        onChange={(e) => setMatricula(e.target.value)}
+      />
+      <button style={styles.button} onClick={handleConsulta}>
+        Consultar
+      </button>
+    </div>
   );
 }
 
-const styles = StyleSheet.create({
+const styles = {
   container: {
-    flex: 1,
+    minHeight: "100vh",
     backgroundColor: "#f5f6fa",
+    display: "flex",
+    flexDirection: "column",
     alignItems: "center",
     justifyContent: "center",
     padding: 24,
@@ -73,15 +68,12 @@ const styles = StyleSheet.create({
     height: 48,
     backgroundColor: "#fff",
     borderRadius: 12,
-    paddingHorizontal: 16,
+    padding: "0 16px",
     fontSize: 18,
-    borderWidth: 1,
-    borderColor: "#ddd",
+    border: "1px solid #ddd",
     marginBottom: 20,
-    shadowColor: "#000",
-    shadowOpacity: 0.05,
-    shadowRadius: 4,
-    elevation: 2,
+    boxShadow: "0 2px 4px rgba(0,0,0,0.05)",
+    outline: "none",
   },
   button: {
     width: "100%",
@@ -89,17 +81,12 @@ const styles = StyleSheet.create({
     height: 48,
     backgroundColor: "#4f8cff",
     borderRadius: 12,
-    alignItems: "center",
-    justifyContent: "center",
-    shadowColor: "#4f8cff",
-    shadowOpacity: 0.2,
-    shadowRadius: 6,
-    elevation: 3,
-  },
-  buttonText: {
     color: "#fff",
     fontSize: 18,
     fontWeight: "bold",
     letterSpacing: 1,
+    border: "none",
+    cursor: "pointer",
+    boxShadow: "0 2px 6px rgba(79,140,255,0.2)",
   },
-});
+};
