@@ -1,9 +1,7 @@
-import { Stack } from "expo-router";
+import { Stack } from 'expo-router';
+import React from 'react';
 
-export default function RootLayout() {
-  return(
-     <Stack>
-      <Stack.Screen name="pages" options={{ headerShown: false }} />
-    </Stack>
-  );
+export default function Layout() {
+  return <Stack screenOptions={
+    { headerShown: false }} />;
 }

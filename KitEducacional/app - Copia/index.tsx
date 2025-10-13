@@ -1,27 +1,27 @@
 import React from "react";
 import { Text, ScrollView, View, StatusBar} from "react-native";
-import { Card } from "@/src/components/Card";
+import { Card } from "./components/Card";
 import { colors, fonts } from "./theme";
 import { useRouter } from "expo-router";
 
 const cards = [
   {
     title: "Cadastros",
-    description: "Gerencie os cadastros de alunos, professores e Eletivas...",
+    description: "Gerencie os cadastros de alunos e professores.",
     image: "https://cdn-icons-png.flaticon.com/512/3135/3135715.png" ,
-    route: "cadastro", // ajuste conforme o caminho real do arquivo
+    route: "page/cadastros", // ajuste conforme o caminho real do arquivo
   },
   {
-    title: "Eleições Escolares",
-    description: "Acesse e gerencie as eleições de presidente de sala.",
+    title: "Eleição",
+    description: "Acesse e gerencie as eleições escolares.",
     image: "https://cdn-icons-png.flaticon.com/512/1828/1828817.png" ,
-    route: "eleicao", // ajuste conforme o caminho real do arquivo
+    route: "/page/eleicao", // ajuste conforme o caminho real do arquivo
   },
   {
     title: "Eletivas",
-    description: "Crie e gerencie um formulario online para Eletivas.",
+    description: "Veja e escolha as disciplinas eletivas.",
     image: "https://cdn-icons-png.flaticon.com/512/3132/3132693.png" ,
-    route: "eletiva", // ajuste conforme o caminho real do arquivo
+    route: "/page/eletiva", // ajuste conforme o caminho real do arquivo
   },
 ];
 
