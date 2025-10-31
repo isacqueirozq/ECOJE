@@ -12,6 +12,12 @@ const cards = [
     route: "cadastro", // ajuste conforme o caminho real do arquivo
   },
   {
+    title: "Listagem",
+    description: "Veja o que foi cadastrado na tela cadastros.",
+    image: "https://cdn-icons-png.flaticon.com/512/1086/1086933.png" ,
+    route: "listagem", // ajuste conforme o caminho real do arquivo
+  },
+  {
     title: "Eleições Escolares",
     description: "Acesse e gerencie as eleições de presidente de sala.",
     image: "https://cdn-icons-png.flaticon.com/512/1828/1828817.png" ,
@@ -22,6 +28,12 @@ const cards = [
     description: "Crie e gerencie um formulario online para Eletivas.",
     image: "https://cdn-icons-png.flaticon.com/512/3132/3132693.png" ,
     route: "eletiva", // ajuste conforme o caminho real do arquivo
+  },
+  {
+    title: "Midias",
+    description: "Baixe videos.",
+    image: "https://cdn-icons-png.flaticon.com/512/3132/3132693.png" ,
+    route: "midias", // ajuste conforme o caminho real do arquivo
   },
 ];
 

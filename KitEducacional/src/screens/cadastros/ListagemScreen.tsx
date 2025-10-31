@@ -33,7 +33,7 @@ export default function ListagemScreen(){
         keyExtractor={(_,i)=>i.toString()}
         renderItem={({item})=>(
           <View style={styles.item}>
-            <Text style={styles.name}>{item.nome || item.nomeEletiva || item.nomeTurma || 'Registro'}</Text>
+            <Text style={styles.name}>{item.nome || item.nomeEletiva || item.nomeTurma || item.nomeCandidato || 'Registro'}</Text>
             <Text style={styles.sub}>{item.email || item.professor || item.createdAt ? new Date(item.createdAt).toLocaleString() : ''}</Text>
           </View>
         )}

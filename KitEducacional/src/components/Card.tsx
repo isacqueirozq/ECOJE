@@ -1,5 +1,5 @@
 import React from "react";
-import { Text, Image, StyleSheet, TouchableOpacity } from "react-native";
+import { Text, Image, StyleSheet, TouchableOpacity, useWindowDimensions, ViewStyle } from "react-native";
 
 interface CardProps {
   title: string;
@@ -9,8 +9,23 @@ interface CardProps {
 }
 
 export function Card({ title, description, imageUrl, onPress }: CardProps) {
+  const { width } = useWindowDimensions();
+
+  // Definindo estilos adaptáveis
+  let cardStyle: ViewStyle = styles.card;
+  if (width >= 900) {
+    // Desktop
+    cardStyle = { ...cardStyle, width: 400, padding: 32 };
+  } else if (width >= 600) {
+    // Tablet
+    cardStyle = { ...cardStyle, width: 400, padding: 24 };
+  } else {
+    // Mobile
+    cardStyle = { ...cardStyle, width: 320, padding: 16 };
+  }
+
   return (
-    <TouchableOpacity style={styles.card} onPress={onPress}>
+    <TouchableOpacity style={cardStyle} onPress={onPress}>
       {imageUrl && <Image source={{ uri: imageUrl }} style={styles.image} />}
       <Text style={styles.title}>{title}</Text>
       {description && <Text style={styles.desc}>{description}</Text>}
@@ -22,7 +37,6 @@ const styles = StyleSheet.create({
   card: {
     backgroundColor: "#fff",
     borderRadius: 20,
-    padding: 20,
     alignItems: "center",
     shadowColor: "#000",
     shadowOpacity: 0.1,
