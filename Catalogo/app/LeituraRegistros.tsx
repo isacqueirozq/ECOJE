@@ -1,6 +1,7 @@
 import React, { useEffect, useState } from "react";
 import { View, Text, Image, StyleSheet, ScrollView, TouchableOpacity } from "react-native";
 import AsyncStorage from "@react-native-async-storage/async-storage";
+import { FileService } from "./services/fileService";
 import { LinearGradient } from "expo-linear-gradient";
 import { Ionicons } from "@expo/vector-icons";
 
@@ -10,7 +11,18 @@ export default function LeituraRegistros({ navigation }: any) {
   useEffect(() => {
     const carregarRegistro = async () => {
       const dados = await AsyncStorage.getItem("@registro");
-      if (dados) setRegistro(JSON.parse(dados));
+      if (!dados) return;
+      
+      const registro = JSON.parse(dados);
+      if (registro.imagem) {
+        // Verifica se a imagem ainda existe no filesystem
+        const fileInfo = await FileService.getFileInfo(registro.imagem);
+        if (!fileInfo.exists && FileService.isDocumentUri(registro.imagem)) {
+          // Se era um arquivo local e não existe mais, limpa o registro
+          registro.imagem = null;
+        }
+      }
+      setRegistro(registro);
     };
     const unsubscribe = navigation?.addListener?.("focus", carregarRegistro);
     carregarRegistro();
@@ -27,6 +39,18 @@ export default function LeituraRegistros({ navigation }: any) {
       </LinearGradient>
     );
   }
+
+  const limparRegistro = async () => {
+    try {
+      if (registro?.imagem && FileService.isDocumentUri(registro.imagem)) {
+        await FileService.deleteFile(registro.imagem);
+      }
+      await AsyncStorage.removeItem("@registro");
+      setRegistro(null);
+    } catch (error) {
+      console.error('Erro ao limpar registro:', error);
+    }
+  };
 
   return (
     <LinearGradient colors={["#43cea2", "#185a9d"]} style={styles.gradient}>
@@ -55,13 +79,23 @@ export default function LeituraRegistros({ navigation }: any) {
               </Text>
             </>
           )}
-          <TouchableOpacity
-            style={styles.botaoVoltar}
-            onPress={() => navigation?.goBack?.()}
-          >
-            <Ionicons name="arrow-back" size={20} color="#fff" />
-            <Text style={styles.textoBotaoVoltar}>Voltar</Text>
-          </TouchableOpacity>
+          <View style={styles.actions}>
+            <TouchableOpacity
+              style={styles.botaoVoltar}
+              onPress={() => navigation?.goBack?.()}
+            >
+              <Ionicons name="arrow-back" size={20} color="#fff" />
+              <Text style={styles.textoBotaoVoltar}>Voltar</Text>
+            </TouchableOpacity>
+            
+            <TouchableOpacity
+              style={[styles.botaoVoltar, styles.botaoLimpar]}
+              onPress={limparRegistro}
+            >
+              <Ionicons name="trash-outline" size={20} color="#fff" />
+              <Text style={styles.textoBotaoVoltar}>Limpar</Text>
+            </TouchableOpacity>
+          </View>
         </View>
       </ScrollView>
     </LinearGradient>
@@ -73,6 +107,40 @@ const styles = StyleSheet.create({
     flex: 1,
     justifyContent: "center",
     alignItems: "center",
+  },
+  loadingContainer: {
+    flex: 1,
+    justifyContent: 'center',
+    alignItems: 'center',
+    backgroundColor: 'rgba(255,255,255,0.97)',
+    borderRadius: 20,
+    padding: 24,
+    width: '90%',
+  },
+  loadingText: {
+    marginTop: 8,
+    color: '#185a9d',
+    fontSize: 14,
+  },
+  errorContainer: {
+    padding: 16,
+    backgroundColor: '#ffebee',
+    borderRadius: 8,
+    marginVertical: 10,
+  },
+  errorText: {
+    color: '#c62828',
+    fontSize: 14,
+    textAlign: 'center',
+  },
+  actions: {
+    flexDirection: 'row',
+    justifyContent: 'space-between',
+    width: '100%',
+    marginTop: 16,
+  },
+  botaoLimpar: {
+    backgroundColor: '#dc2626',
   },
   scroll: {
     flexGrow: 1,
